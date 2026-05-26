@@ -1,10 +1,11 @@
 import Fastify,{ FastifyRequest } from "fastify";
-
+import cors from "@fastify/cors";
 import {
     HeartbeatPayload,
     IncidentPayload,
     ServiceStatus,
 } from "./types/service";
+
 
 const app = Fastify({
   logger: true,
@@ -69,7 +70,13 @@ const interval = setInterval(() => {
 }, 60 * 1000);
 
 const start = async () => {
+  await app.register(cors, {
+    origin: true,
+  });
+  
   try {
+
+
     await app.listen({
       host: "0.0.0.0",
       port: Number(process.env.PORT) || 3000,
