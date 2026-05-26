@@ -1,0 +1,30 @@
+services:
+  middleware:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+
+    container_name: incident-middleware
+
+    working_dir: /app
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DASHBOARD_URL: http://dashboard-api/incidents
+
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+
+    restart: unless-stopped
+
+    command: npx tsx src/index.ts
+
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "5173:5173"
